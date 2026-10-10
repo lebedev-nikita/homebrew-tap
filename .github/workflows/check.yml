@@ -1,0 +1,32 @@
+name: Check cask
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Load tap
+        run: brew tap lebedev-nikita/tap "$GITHUB_WORKSPACE"
+      - name: Check cask style and metadata
+        env:
+          HOMEBREW_GITHUB_API_TOKEN: ${{ github.token }}
+        run: |
+          brew style --cask lebedev-nikita/tap/concentration-slop
+          brew audit --cask --strict lebedev-nikita/tap/concentration-slop
+      - name: Verify Apple Silicon download
+        run: brew fetch --cask --arch=arm lebedev-nikita/tap/concentration-slop
+      - name: Verify Intel download
+        run: brew fetch --cask --arch=intel lebedev-nikita/tap/concentration-slop
+      - name: Verify installation
+        run: |
+          brew install --cask --appdir="$RUNNER_TEMP/apps" lebedev-nikita/tap/concentration-slop
+          test -d "$RUNNER_TEMP/apps/Concentration Slop.app"
