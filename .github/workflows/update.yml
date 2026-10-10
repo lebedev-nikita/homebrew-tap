@@ -1,0 +1,38 @@
+name: Update OpenDictate
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-open-dictate
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: macos-15
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      HOMEBREW_NO_AUTO_UPDATE: "1"
+      HOMEBREW_NO_ANALYTICS: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Test updater
+        run: python3 -m unittest discover -s tests
+      - name: Update from verified stable release
+        run: python3 scripts/update-cask.py
+      - name: Check cask style
+        run: brew style Casks/open-dictate.rb
+      - name: Publish cask update
+        run: |
+          if git diff --quiet -- Casks/open-dictate.rb; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add Casks/open-dictate.rb
+          git commit -m 'Update OpenDictate cask from stable macOS release'
+          git push
