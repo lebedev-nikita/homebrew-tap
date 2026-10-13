@@ -1,0 +1,47 @@
+name: Check BoxDB
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Formula/boxdb.rb"
+      - "scripts/update-boxdb.py"
+      - "tests/test_update_boxdb.py"
+      - ".github/workflows/boxdb-check.yml"
+      - ".github/workflows/update-boxdb.yml"
+  pull_request:
+    paths:
+      - "Formula/boxdb.rb"
+      - "scripts/update-boxdb.py"
+      - "tests/test_update_boxdb.py"
+      - ".github/workflows/boxdb-check.yml"
+      - ".github/workflows/update-boxdb.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: macos-15
+    timeout-minutes: 15
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: "1"
+      HOMEBREW_NO_ANALYTICS: "1"
+      HOMEBREW_GITHUB_API_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Test release updaters
+        run: python3 -m unittest discover -s tests
+      - name: Load tap
+        run: brew tap lebedev-nikita/tap "$GITHUB_WORKSPACE"
+      - name: Check formula
+        run: |
+          brew trust --formula lebedev-nikita/tap/boxdb
+          brew style --formula lebedev-nikita/tap/boxdb
+          brew audit --strict --formula lebedev-nikita/tap/boxdb
+      - name: Install and test CLI
+        run: |
+          brew install lebedev-nikita/tap/boxdb
+          brew test lebedev-nikita/tap/boxdb
+          brew linkage --test lebedev-nikita/tap/boxdb

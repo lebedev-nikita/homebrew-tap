@@ -1,0 +1,57 @@
+name: Update BoxDB
+
+on:
+  schedule:
+    - cron: "43 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-boxdb
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: macos-15
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      HOMEBREW_NO_AUTO_UPDATE: "1"
+      HOMEBREW_NO_ANALYTICS: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      - name: Test release updaters
+        run: python3 -m unittest discover -s tests
+      - name: Update from verified stable release
+        run: python3 scripts/update-boxdb.py
+      - name: Check formula style and audit
+        run: |
+          brew tap lebedev-nikita/tap "$GITHUB_WORKSPACE"
+          brew trust --formula lebedev-nikita/tap/boxdb
+          cp Formula/boxdb.rb "$(brew --repo lebedev-nikita/tap)/Formula/boxdb.rb"
+          brew style --formula lebedev-nikita/tap/boxdb
+          brew audit --strict --formula lebedev-nikita/tap/boxdb
+      - name: Publish formula update or keep scheduled updates active
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if ! git diff --quiet -- Formula/boxdb.rb; then
+            git add Formula/boxdb.rb
+            git commit -m 'Update BoxDB formula from verified stable release'
+          else
+            git pull --rebase
+            latest_commit_time="$(git log -1 --format=%ct)"
+            current_time="$(date +%s)"
+            if (( current_time - latest_commit_time < 30 * 24 * 60 * 60 )); then exit 0; fi
+            git commit --allow-empty -m 'Keep scheduled release updates active'
+          fi
+          for attempt in 1 2 3; do
+            git pull --rebase
+            if git push; then exit 0; fi
+            echo "Push attempt $attempt failed"
+          done
+          exit 1

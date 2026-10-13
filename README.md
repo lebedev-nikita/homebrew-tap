@@ -1,5 +1,42 @@
 # Homebrew tap
 
+## BoxDB
+
+Install [BoxDB](https://github.com/lebedev-nikita/boxdb), an experimental SQL
+database for single-server apps and Git-tracked data:
+
+```sh
+brew install lebedev-nikita/tap/boxdb
+```
+
+Apple Silicon macOS and x86-64 Linux use release binaries. Intel macOS and ARM
+Linux build from the source package with Rust and CMake. Update with:
+
+```sh
+brew update
+brew upgrade boxdb
+```
+
+The update workflow checks stable BoxDB releases hourly and can be run manually
+from Actions. It verifies the binary and source archives against `SHA256SUMS`
+before updating the formula. Drafts, prereleases, incomplete releases, and
+downgrades are excluded. Published assets must remain unchanged.
+
+For maintainers, releases need both CLI archives, the `.crate` source package,
+and `SHA256SUMS`. The updater and workflow define the required filenames. The
+workflow uses this tap's `GITHUB_TOKEN`; no extra credentials are required.
+A sparse maintenance commit keeps scheduled checks active during quiet periods.
+
+```sh
+python3 -m unittest discover -s tests
+python3 scripts/update-boxdb.py
+brew style --formula lebedev-nikita/tap/boxdb
+brew audit --strict --formula lebedev-nikita/tap/boxdb
+brew test lebedev-nikita/tap/boxdb
+```
+
+## Concentration Slop
+
 Install [Concentration Slop](https://github.com/lebedev-nikita/concentration-slop) on macOS 14+, on Apple Silicon or Intel:
 
 ```sh
