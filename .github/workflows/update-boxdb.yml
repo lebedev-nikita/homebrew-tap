@@ -35,6 +35,12 @@ jobs:
           cp Formula/boxdb.rb "$(brew --repo lebedev-nikita/tap)/Formula/boxdb.rb"
           brew style --formula lebedev-nikita/tap/boxdb
           brew audit --strict --formula lebedev-nikita/tap/boxdb
+      - name: Install and test changed formula
+        run: |
+          if git diff --quiet -- Formula/boxdb.rb; then exit 0; fi
+          brew install lebedev-nikita/tap/boxdb
+          brew test lebedev-nikita/tap/boxdb
+          brew linkage --test lebedev-nikita/tap/boxdb
       - name: Publish formula update or keep scheduled updates active
         run: |
           git config user.name 'github-actions[bot]'
