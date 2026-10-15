@@ -1,6 +1,6 @@
 cask "open-dictate" do
-  version "0.4.5"
-  sha256 "7ab37bbbb8bf0aa8144a5fc1b1d67c068afcbb5832e27772e9bb49b05beca1c8"
+  version "0.4.6"
+  sha256 "c18938d5edf370e05dac689e41ba1f71d037dd875ce8fbb8dc218a0e27915b4a"
 
   url "https://github.com/lebedev-nikita/open-dictate/releases/download/macos-v#{version}/OpenDictate-macOS-#{version}-universal.dmg"
   name "OpenDictate"
