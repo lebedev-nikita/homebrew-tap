@@ -64,6 +64,40 @@ brew reinstall --cask lebedev-nikita/tap/concentration-slop
 After publishing a Concentration Slop release, update the cask version and archive SHA-256.
 Keep published release assets unchanged.
 
+## Gitler
+
+Install [Gitler](https://github.com/lebedev-nikita/gitler), a desktop Git graph for
+branches and worktrees, on a Mac with Apple Silicon:
+
+```sh
+brew install --cask lebedev-nikita/tap/gitler
+gitler /path/to/repository
+```
+
+This installs `Gitler.app`, the `gitler` command, and Git. Update with:
+
+```sh
+brew update
+brew upgrade --cask lebedev-nikita/tap/gitler
+```
+
+If installed from `jeff-business/tap`, switch with:
+
+```sh
+brew reinstall --cask lebedev-nikita/tap/gitler
+```
+
+The app uses ad-hoc signing and is not notarized.
+
+The update workflow checks published Gitler releases hourly, including release
+candidates. It uses the matching released `scripts/release.py` helper to update
+the version and archive checksum, with this tap's `GITHUB_TOKEN`; no extra
+credentials are required. Run an immediate check with:
+
+```sh
+gh workflow run update-gitler.yml --repo lebedev-nikita/homebrew-tap
+```
+
 ## OpenDictate
 
 Install [OpenDictate](https://github.com/lebedev-nikita/open-dictate), a macOS

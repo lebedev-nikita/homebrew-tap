@@ -1,0 +1,44 @@
+name: Update Gitler
+
+on:
+  schedule:
+    - cron: "27 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-gitler
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Resolve the newest published Gitler release
+        id: release
+        run: |
+          release_tag="$(gh release list --repo lebedev-nikita/gitler --exclude-drafts --limit 1 --json tagName --jq '.[0].tagName')"
+          test -n "$release_tag"
+          test "$release_tag" != "null"
+          echo "tag=$release_tag" >> "$GITHUB_OUTPUT"
+      - name: Check out the matching Gitler release helper
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          repository: lebedev-nikita/gitler
+          ref: ${{ steps.release.outputs.tag }}
+          path: gitler-release
+          persist-credentials: false
+      - name: Test the released publishing helper
+        working-directory: gitler-release
+        run: python3 -m unittest discover -s scripts -p 'test_release.py'
+      - name: Update the cask from published checksums and push
+        working-directory: gitler-release
+        env:
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+        run: python3 scripts/release.py update-tap "$RELEASE_TAG" "$GITHUB_WORKSPACE"
