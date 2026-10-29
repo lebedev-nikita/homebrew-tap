@@ -1,17 +1,17 @@
 class Boxdb < Formula
-  desc "Embedded SQL database with strict types, Git-friendly files, and S3 backups"
+  desc "SQLite with validated types, exact decimals, and readable YAML storage"
   homepage "https://github.com/lebedev-nikita/boxdb"
   license "MIT"
 
   on_macos do
     on_arm do
-      url "https://github.com/lebedev-nikita/boxdb/releases/download/v0.1.0/boxdb-0.1.0-aarch64-apple-darwin.tar.gz"
-      sha256 "05bdcc98a33e7dee4c06c99eaaf91539da9d67090fd537f7ea3caba8027a21fa"
+      url "https://github.com/lebedev-nikita/boxdb/releases/download/v0.5.1/boxdb-0.5.1-aarch64-apple-darwin.tar.gz"
+      sha256 "6a0bee9e43483dc9d8c78ba609bc4ac1658f2cd7188565c28fefc677407f73ac"
     end
 
     on_intel do
-      url "https://github.com/lebedev-nikita/boxdb/releases/download/v0.1.0/boxdb-0.1.0.crate"
-      sha256 "48079d57b1e3d9a061b37f3278bf46d3166d910780162e69831935c4ce1e4ea4"
+      url "https://github.com/lebedev-nikita/boxdb/releases/download/v0.5.1/boxdb-0.5.1.crate"
+      sha256 "0112f98cd033993776bf28d2c767c720db1634fb54756e518035a6605db40d66"
 
       depends_on "cmake" => :build
       depends_on "rust" => :build
@@ -20,13 +20,13 @@ class Boxdb < Formula
 
   on_linux do
     on_intel do
-      url "https://github.com/lebedev-nikita/boxdb/releases/download/v0.1.0/boxdb-0.1.0-x86_64-unknown-linux-musl.tar.gz"
-      sha256 "a1bfbcfdc848b018c8d599c5c57986905655b1de5c8670ee10fa82fa27767bbc"
+      url "https://github.com/lebedev-nikita/boxdb/releases/download/v0.5.1/boxdb-0.5.1-x86_64-unknown-linux-musl.tar.gz"
+      sha256 "d5f7077ca1d4cdc2f49738e99639d2a794a2e83c4b071b563e1ff8617bad8b15"
     end
 
     on_arm do
-      url "https://github.com/lebedev-nikita/boxdb/releases/download/v0.1.0/boxdb-0.1.0.crate"
-      sha256 "48079d57b1e3d9a061b37f3278bf46d3166d910780162e69831935c4ce1e4ea4"
+      url "https://github.com/lebedev-nikita/boxdb/releases/download/v0.5.1/boxdb-0.5.1.crate"
+      sha256 "0112f98cd033993776bf28d2c767c720db1634fb54756e518035a6605db40d66"
 
       depends_on "cmake" => :build
       depends_on "rust" => :build
@@ -50,13 +50,13 @@ class Boxdb < Formula
 
   test do
     assert_equal "boxdb #{version}\n", shell_output("#{bin}/boxdb --version")
-    readable = testpath/"readable.jsonl"
+    readable = testpath/"readable.yaml"
     binary = testpath/"binary.boxdb"
     system bin/"boxdb", readable, "--format", "readable", "-e",
            "CREATE TABLE items(id INTEGER); INSERT INTO items VALUES(7)"
     assert_equal "id\n7\n", shell_output("#{bin}/boxdb #{readable} -e 'SELECT id FROM items'")
-    assert_match "type mismatch",
-                 shell_output("#{bin}/boxdb #{readable} -e \"INSERT INTO items VALUES('7')\" 2>&1", 1)
+    assert_match "cannot store TEXT value in INTEGER column",
+                 shell_output("#{bin}/boxdb #{readable} -e \"INSERT INTO items VALUES('invalid')\" 2>&1", 1)
     system bin/"boxdb", "convert", readable, binary, "--format", "binary"
     assert_equal "id\n7\n", shell_output("#{bin}/boxdb #{binary} -e 'SELECT id FROM items'")
   end
