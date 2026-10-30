@@ -5,13 +5,13 @@ class Boxdb < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/lebedev-nikita/boxdb/releases/download/v0.6.0/boxdb-0.6.0-aarch64-apple-darwin.tar.gz"
-      sha256 "90c0af9ac798f6143d97372b97b2ef8d1d6c9b8b09c8baef886918a0f7682ecb"
+      url "https://github.com/lebedev-nikita/boxdb/releases/download/v0.7.0/boxdb-0.7.0-aarch64-apple-darwin.tar.gz"
+      sha256 "3b5daadced40df8ab272ddcbfd8b87966289f090f6c824ac32cb0b4fc0f46211"
     end
 
     on_intel do
-      url "https://github.com/lebedev-nikita/boxdb/releases/download/v0.6.0/boxdb-0.6.0.crate"
-      sha256 "2691f522e339007084428c3e2d83684e51c0002e85c78d420ce5c4a970794e64"
+      url "https://github.com/lebedev-nikita/boxdb/releases/download/v0.7.0/boxdb-0.7.0.crate"
+      sha256 "8746e0ddff185910ee61e9c4f98c6ba215d86c6668ced24591249d0ad442f48a"
 
       depends_on "cmake" => :build
       depends_on "rust" => :build
@@ -20,13 +20,13 @@ class Boxdb < Formula
 
   on_linux do
     on_intel do
-      url "https://github.com/lebedev-nikita/boxdb/releases/download/v0.6.0/boxdb-0.6.0-x86_64-unknown-linux-musl.tar.gz"
-      sha256 "9e2bcd94be8353764fa908df5e63e677079336f73a833c14c7e92cb1db25e485"
+      url "https://github.com/lebedev-nikita/boxdb/releases/download/v0.7.0/boxdb-0.7.0-x86_64-unknown-linux-musl.tar.gz"
+      sha256 "5a380b687a9576867bc5236367646c2661e4aeb405504cc67266170c72912efb"
     end
 
     on_arm do
-      url "https://github.com/lebedev-nikita/boxdb/releases/download/v0.6.0/boxdb-0.6.0.crate"
-      sha256 "2691f522e339007084428c3e2d83684e51c0002e85c78d420ce5c4a970794e64"
+      url "https://github.com/lebedev-nikita/boxdb/releases/download/v0.7.0/boxdb-0.7.0.crate"
+      sha256 "8746e0ddff185910ee61e9c4f98c6ba215d86c6668ced24591249d0ad442f48a"
 
       depends_on "cmake" => :build
       depends_on "rust" => :build
