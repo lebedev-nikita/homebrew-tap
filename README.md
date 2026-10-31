@@ -152,7 +152,9 @@ sharing between a Mac and Android over Bluetooth:
 brew install --cask lebedev-nikita/tap/cliprelay
 ```
 
-Requires macOS 13+. Builds are ad-hoc signed and **not notarized**. Pairings are
+Requires macOS 13+. Builds are ad-hoc signed and **not notarized**, so
+Gatekeeper blocks them; before the first launch run
+`xattr -dr com.apple.quarantine /Applications/ClipRelay.app`. Pairings are
 kept in the Keychain; after each update macOS asks once for the login keychain
 password; choose **Always Allow**. In-app (Sparkle) updates come from upstream
 and would replace the fork build, so turn off automatic update checks in
