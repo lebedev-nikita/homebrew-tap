@@ -141,3 +141,28 @@ brew style Casks/open-dictate.rb
 
 The updater requires Python 3 and an authenticated `gh` CLI. Cask checks run on
 macOS in CI. This tap distributes published binaries; it does not build the app.
+
+## ClipRelay
+
+Install [ClipRelay](https://github.com/lebedev-nikita/cliprelay), a fork of
+[geekflyer/cliprelay](https://github.com/geekflyer/cliprelay) for clipboard
+sharing between a Mac and Android over Bluetooth:
+
+```bash
+brew install --cask lebedev-nikita/tap/cliprelay
+```
+
+Requires macOS 13+. Builds are ad-hoc signed and **not notarized**. Pairings are
+kept in the Keychain; after each update macOS asks once for the login keychain
+password; choose **Always Allow**. In-app (Sparkle) updates come from upstream
+and would replace the fork build, so turn off automatic update checks in
+ClipRelay Settings.
+
+Update with:
+
+```bash
+brew update
+brew upgrade --cask lebedev-nikita/tap/cliprelay
+```
+
+The cask is updated by hand for new `mac/vX.Y.Z` releases of the fork.
