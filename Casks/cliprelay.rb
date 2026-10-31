@@ -1,6 +1,6 @@
 cask "cliprelay" do
-  version "0.7.6"
-  sha256 "6504a98b42e3b190aa125f0a01567b9cd8abfe90629a1c94b0bd44c501e2c634"
+  version "0.7.7"
+  sha256 "5840798396af95341749eb1a1dd6cae21c1913826e0d38d9801aad65bec99be9"
 
   url "https://github.com/lebedev-nikita/cliprelay/releases/download/mac/v#{version}/ClipRelay-#{version}.dmg"
   name "ClipRelay"
