@@ -26,7 +26,5 @@ cask "cliprelay" do
     This fork build is ad-hoc signed and not notarized, so Gatekeeper blocks it.
     Before the first launch run:
       xattr -dr com.apple.quarantine /Applications/ClipRelay.app
-    In-app updates come from upstream ClipRelay and would replace this build;
-    turn off "Automatically check for updates" in ClipRelay Settings to keep it.
   EOS
 end

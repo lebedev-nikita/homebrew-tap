@@ -156,15 +156,26 @@ Requires macOS 13+. Builds are ad-hoc signed and **not notarized**, so
 Gatekeeper blocks them; before the first launch run
 `xattr -dr com.apple.quarantine /Applications/ClipRelay.app`. Pairings are
 kept in the Keychain; after each update macOS asks once for the login keychain
-password; choose **Always Allow**. In-app (Sparkle) updates come from upstream
-and would replace the fork build, so turn off automatic update checks in
-ClipRelay Settings.
+password; choose **Always Allow**. Builds from 0.7.6 have no in-app updater;
+update through Homebrew, then remove the quarantine flag again:
 
 Update with:
 
 ```bash
 brew update
 brew upgrade --cask lebedev-nikita/tap/cliprelay
+xattr -dr com.apple.quarantine /Applications/ClipRelay.app
 ```
 
-The cask is updated by hand for new `mac/vX.Y.Z` releases of the fork.
+### ClipRelay maintenance
+
+The update workflow checks stable `mac/vX.Y.Z` releases of the fork hourly and
+can be run manually from Actions. Android releases, drafts and prereleases are
+excluded. Releases need `ClipRelay-X.Y.Z.dmg` and its `.sha256` attachment; the
+DMG is verified against it before the cask's version and SHA-256 are updated.
+
+```bash
+python3 -m unittest discover -s tests
+python3 scripts/update-cliprelay.py
+brew style Casks/cliprelay.rb
+```

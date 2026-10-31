@@ -32,6 +32,14 @@ jobs:
         run: |
           brew style --cask lebedev-nikita/tap/gitler
           brew audit --cask --strict lebedev-nikita/tap/gitler
+      - name: Check ClipRelay cask
+        env:
+          HOMEBREW_GITHUB_API_TOKEN: ${{ github.token }}
+        run: |
+          brew style --cask lebedev-nikita/tap/cliprelay
+          brew audit --cask --strict lebedev-nikita/tap/cliprelay
+      - name: Verify ClipRelay download
+        run: brew fetch --cask lebedev-nikita/tap/cliprelay
       - name: Verify Gitler Apple Silicon download
         run: brew fetch --cask --arch=arm lebedev-nikita/tap/gitler
       - name: Verify Apple Silicon download
@@ -48,3 +56,5 @@ jobs:
           test -d "$RUNNER_TEMP/apps/OpenDictate.app"
           brew install --cask --appdir="$RUNNER_TEMP/apps" lebedev-nikita/tap/gitler
           test -d "$RUNNER_TEMP/apps/Gitler.app"
+          brew install --cask --appdir="$RUNNER_TEMP/apps" lebedev-nikita/tap/cliprelay
+          test -d "$RUNNER_TEMP/apps/ClipRelay.app"
