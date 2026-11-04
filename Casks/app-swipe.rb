@@ -1,6 +1,6 @@
 cask "app-swipe" do
-  version "0.2.4"
-  sha256 "41f6aa64b928db6ac9537388978e5784a2ad33eae29ca71c661beea8938d63c3"
+  version "0.2.5"
+  sha256 "4067914190c492b439f3af5e91784ca63071c02cf0ba457a373685e5e0d538f9"
 
   url "https://github.com/lebedev-nikita/AppSwipe/releases/download/v#{version}/AppSwipe-#{version}.zip"
   name "AppSwipe"
