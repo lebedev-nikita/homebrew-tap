@@ -1,5 +1,27 @@
 # Homebrew tap
 
+## AppSwipe
+
+Install [AppSwipe](https://github.com/lebedev-nikita/AppSwipe), which switches
+apps and windows with three- and four-finger trackpad swipes, on macOS 26+ on
+Apple Silicon or Intel:
+
+```sh
+brew install --cask lebedev-nikita/tap/appswipe
+```
+
+AppSwipe needs Accessibility, and Screen Recording for window previews.
+Releases are signed with a self-signed certificate and not notarized by Apple;
+macOS may require approval in Privacy & Security. Update with:
+
+```sh
+brew update
+brew upgrade --cask lebedev-nikita/tap/appswipe
+```
+
+After publishing an AppSwipe release, run `just cask` in the AppSwipe repository
+to update the cask version and archive SHA-256.
+
 ## BoxDB
 
 Install [BoxDB](https://github.com/lebedev-nikita/boxdb), an experimental SQL
