@@ -1,4 +1,4 @@
-cask "appswipe" do
+cask "app-swipe" do
   version "0.1.2"
   sha256 "05acbca1e1f86a52257ad9370fee0bf648f5b69470ac4f87f21743babe04d49c"
 

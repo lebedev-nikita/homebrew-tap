@@ -7,7 +7,7 @@ apps and windows with three- and four-finger trackpad swipes, on macOS 26+ on
 Apple Silicon or Intel:
 
 ```sh
-brew install --cask lebedev-nikita/tap/appswipe
+brew install --cask lebedev-nikita/tap/app-swipe
 ```
 
 AppSwipe needs Accessibility, and Screen Recording for window previews.
@@ -16,7 +16,7 @@ macOS may require approval in Privacy & Security. Update with:
 
 ```sh
 brew update
-brew upgrade --cask lebedev-nikita/tap/appswipe
+brew upgrade --cask lebedev-nikita/tap/app-swipe
 ```
 
 After publishing an AppSwipe release, run `just cask` in the AppSwipe repository
