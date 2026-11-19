@@ -51,6 +51,14 @@ jobs:
           brew audit --cask --strict lebedev-nikita/tap/cliprelay
       - name: Verify ClipRelay download
         run: brew fetch --cask lebedev-nikita/tap/cliprelay
+      - name: Check Open Computer Use cask
+        env:
+          HOMEBREW_GITHUB_API_TOKEN: ${{ github.token }}
+        run: |
+          brew style --cask lebedev-nikita/tap/open-computer-use
+          brew audit --cask --strict lebedev-nikita/tap/open-computer-use
+      - name: Verify Open Computer Use universal download
+        run: brew fetch --cask lebedev-nikita/tap/open-computer-use
       - name: Verify Gitler Apple Silicon download
         run: brew fetch --cask --arch=arm lebedev-nikita/tap/gitler
       - name: Verify Apple Silicon download
@@ -69,3 +77,6 @@ jobs:
           test -d "$RUNNER_TEMP/apps/Gitler.app"
           brew install --cask --appdir="$RUNNER_TEMP/apps" lebedev-nikita/tap/cliprelay
           test -d "$RUNNER_TEMP/apps/ClipRelay.app"
+          brew install --cask --appdir="$RUNNER_TEMP/apps" lebedev-nikita/tap/open-computer-use
+          test -d "$RUNNER_TEMP/apps/Open Computer Use.app"
+          ocu --version | grep -qx "$(brew info --cask --json=v2 lebedev-nikita/tap/open-computer-use | jq -r '.casks[0].version')"

@@ -164,6 +164,41 @@ brew style Casks/open-dictate.rb
 The updater requires Python 3 and an authenticated `gh` CLI. Cask checks run on
 macOS in CI. This tap distributes published binaries; it does not build the app.
 
+## Open Computer Use
+
+Install [Open Computer Use](https://github.com/iFurySt/open-computer-use), a
+third-party Computer Use MCP server and CLI by iFurySt, on macOS 14+:
+
+```sh
+brew install --cask lebedev-nikita/tap/open-computer-use
+open-computer-use mcp
+```
+
+This installs the upstream notarized `Open Computer Use.app` and links its
+executable as `open-computer-use` and `ocu`. Grant Accessibility and Screen
+Recording when prompted. The app does not include the npm package's Node
+wrapper, so `capabilities`, `config`, `js`, `repl` and the `install-*` commands
+are unavailable; configure MCP clients with `open-computer-use mcp` directly.
+Uninstall the npm package before switching. Update with:
+
+```sh
+brew update
+brew upgrade --cask lebedev-nikita/tap/open-computer-use
+```
+
+The update workflow checks stable `vX.Y.Z` releases every six hours and can be
+run manually from Actions. Drafts, prereleases and downgrades are excluded. The
+app archive is verified against the release's `SHA256SUMS` and GitHub's asset
+digest before the version and SHA-256 are updated. This cask is a stopgap until
+upstream publishes its own Homebrew package
+([iFurySt/open-computer-use#192](https://github.com/iFurySt/open-computer-use/issues/192)).
+
+```sh
+python3 -m unittest discover -s tests
+python3 scripts/update-open-computer-use.py
+brew style Casks/open-computer-use.rb
+```
+
 ## ClipRelay
 
 Install [ClipRelay](https://github.com/lebedev-nikita/cliprelay), a fork of
